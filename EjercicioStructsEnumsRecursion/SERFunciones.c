@@ -40,7 +40,7 @@ void ingresarUsuario(persona matriz[][5]){
 }
 
 
-void mostrarDatosMes( persona matriz[][5], mes ){
+void mostrarDatosMes( persona matriz[][5], int mes ){
 	int j = 0;
 	char temp[20] = "";
 	mes -= 1;
@@ -77,56 +77,48 @@ int contar(persona matriz[][5], int mes, int i ){
 }
 
 
-void estaciones(persona matriz[][5], int estacion){
-	switch(estacion)
-	case 1: 
-		printf("Hemisferio norte: \n")
-		mostrarDatosMes(matriz, DICIEMBRE);
-		mostrarDatosMes(matriz, ENERO);
-		mostrarDatosMes(matriz, FEBRERO);
-		
-		printf("Hemisferio sur: \n")
-		mostrarDatosMes(matriz, JUNIO);
-		mostrarDatosMes(matriz, JULIO);
-		mostrarDatosMes(matriz, AGOSTO);
-
-	case 2:
-		
-		printf("Hemisferio norte: \n")
-		mostrarDatosMes(matriz, MARZO);
-		mostrarDatosMes(matriz, ABRIL);
-		mostrarDatosMes(matriz, MAYO);
+void mostarRegistros(persona matriz[][5]){
+	int i;
 	
-		printf("Hemisferio sur: \n")
-		mostrarDatosMes(matriz, OCTUBRE);
-		mostrarDatosMes(matriz, SEPTIEMBRE);
-		mostrarDatosMes(matriz, NOVIEMBRE);
+	for ( i = 0; i < 12; i++){
 		
-	case 3:
-		printf("Hemisferio norte: \n")
-		mostrarDatosMes(matriz, JUNIO);
-		mostrarDatosMes(matriz, JULIO);
-		mostrarDatosMes(matriz, AGOSTO);
-		
-		printf("Hemisferio sur: \n")
-		mostrarDatosMes(matriz, DICIEMBRE);
-		mostrarDatosMes(matriz, ENERO);
-		mostrarDatosMes(matriz, FEBRERO);
-		
-		
-	if ( == 4):
-		
-		printf("Hemisferio norte: \n")
-		mostrarDatosMes(matriz, OCTUBRE);
-		mostrarDatosMes(matriz, SEPTIEMBRE);
-		mostrarDatosMes(matriz, NOVIEMBRE);
-		
-		
-		printf("Hemisferio SUR: \n")
-		mostrarDatosMes(matriz, MARZO);
-		mostrarDatosMes(matriz, ABRIL);
-		mostrarDatosMes(matriz, MAYO);
-	
+		switch ( i ){
+			
+		case ENERO:
+			printf("El numero de personas en enero son:%d", contar(matriz, i, 0 ));
+			break;
+		case FEBRERO:
+			printf("El numero de personas en febrero son:%d", contar(matriz, i, 0 ));
+			break;
+		case MARZO:
+			printf("El numero de personas en marzo son:%d", contar(matriz, i, 0 ));
+			break;
+		case ABRIL:
+			printf("El numero de personas en abril son:%d", contar(matriz, i, 0 ));
+			break;
+		case MAYO:
+			printf("El numero de personas en mayo son:%d", contar(matriz, i, 0 ));
+			break;
+		case JUNIO:
+			printf("El numero de personas en junio son:%d", contar(matriz, i, 0 ));
+			break;
+		case JULIO:
+			printf("El numero de personas en julio son:%d", contar(matriz, i, 0 ));
+			break;
+		case AGOSTO:
+			printf("El numero de personas en agosto son:%d", contar(matriz, i, 0 ));
+			break;
+		case SEPTIEMBRE:
+			printf("El numero de personas en septiembre son:%d", contar(matriz, i, 0 ));
+			break;
+		case NOVIEMBRE:
+			printf("El numero de personas en noviembre son:%d", contar(matriz, i, 0 ));
+			break;
+		case DICIEMBRE:
+			printf("El numero de personas en diciembre son:%d", contar(matriz, i, 0 ));
+			break;
+		}
+	}
 }
 
 

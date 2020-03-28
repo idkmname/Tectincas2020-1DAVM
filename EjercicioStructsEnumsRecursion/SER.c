@@ -13,7 +13,7 @@ void mostrarMenu() {
 		printf("1. Ingresar un nuevo usuario\n");
 		printf("2. Mostrar cumpleanios por mes\n");
 		printf("3. Mostrar numero de usuarios por mes\n");
-		printf("4. Mostrar usuarios ingresados segun la estacion\n");
+		printf("4. Mostrar el numero de usuarios registrados\n");
 		printf("0. Salir\n\n");
 		printf("Opc: ");
 		scanf("%d", &opcion);
@@ -33,13 +33,7 @@ void mostrarMenu() {
 				printf("%d\n",contar(matriz, mes, 0));
 				break;
 			case 4:
-				printf ("Que estacion quiere revisar ?")						
-				printf("1. Invierno");
-				printf("2. Primavera");
-				printf("3. Verano");
-				printf("4. Otoño");
-				scanf("/d", &estacion)
-				estaciones(matriz, estacion);
+				mostarRegistros(matriz);
 				break;
 		}
 		//Cuando el usuario ingrese 0 se terminará el menu
