@@ -1,10 +1,13 @@
 #include "SER.h"
 
+/*Esta bn organizado, mira los comentarios respecto a las constantes */
+
 void inicializar(persona matriz[][5]){
 	persona prototipo;
 	int i, j;
 	char emptyNom[20] = "";
 	
+	// El 12 quedaría mejor si es una constante
 	for ( i = 0; i < 12; i++){
 		for ( j = 0; j < 5; j++){
 			matriz[i][j] = prototipo;
@@ -26,7 +29,7 @@ void ingresarUsuario(persona matriz[][5]){
 	mes -=1;
 	col = contar(matriz, mes,0);
 	
-	if (col < 5){
+	if (col < 5){ // El  5 quedaría mejor si fuera una constante
 		matriz[mes][col].mes = mes + 1;
 		printf("Ingrese el nombre: ");
 		scanf("%s", matriz[mes][col].nombre);
