@@ -19,6 +19,14 @@ void definirTamanio(local_t *** centroComercial, int fil, int col){
 	*centroComercial = temp;
 }
 
+void mostrarInformacion(local_t *** centroComercial, int piso, int local){
+	local_t **temp = *centroComercial;
+	printf("\nEl Negocio %s ", temp[piso][local].nombreLocal);
+	printf("se encuentra en el piso %d ",piso + 1);
+	printf("en el local numero %d ", local + 1);
+	printf("\n[id del local %d]",temp[piso][local].idLocal);
+}
+
 void agregarNegocio(local_t *** centroComercial, int fil, int col){
 	int piso, local, flag = 1;
 	local_t **temp = *centroComercial;
@@ -56,10 +64,7 @@ void imprimirLocalesPiso(local_t *** centroComercial, int filTemp, int col, int 
 	}
 	else{
 		if( temp[filTemp - 1][i].disp ){
-			printf("\nNombre del negocio: %s\n", temp[filTemp - 1][i].nombreLocal );
-			printf("Id del negocio: %d\n", temp[filTemp - 1][i].idLocal );
-			printf("Piso del negocio: %d\n", filTemp );
-			printf("Numero del negocio: %d\n", i + 1);	
+			mostrarInformacion(centroComercial, filTemp - 1, i);
 		}
 		imprimirLocalesPiso(centroComercial, filTemp, col, i + 1);
 	}
@@ -71,10 +76,7 @@ void buscarLocalNombre(local_t *** centroComercial, int fil, int col, char nombr
 	for ( i = 0; i < fil; i++){
 		for ( j = 0; j < col; j++){
 			if ( !(strcmp(temp[i][j].nombreLocal, nombre))){
-				printf("\nEl Negocio %s ", temp[i][j].nombreLocal);
-				printf("se encuentra en el piso %d ",i + 1);
-				printf("en el local numero %d ", j + 1);
-				printf("/n[id del local %d]",temp[i][j].idLocal);
+				mostrarInformacion(centroComercial, i, j);
 				return;
 			}
 		}

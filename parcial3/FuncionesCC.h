@@ -8,6 +8,7 @@
 //Local 
 typedef struct Local{
 	char nombreLocal[35];
+	char tipoLocal[30];
 	int idLocal; // Calculado automaticamente por su programa
 	int pisoLocal;
 	int numLocalxPiso;//Columnas
@@ -23,6 +24,8 @@ enum disp{
 /* Define el tamano del la matriz en la que se contiene el centro comercial*/
 void definirTamanio(local_t *** centroComercial, int fil, int col);
 
+/* Imprime en consola la informacion de un negocio */
+void mostrarInformacion(local_t *** centroComercial, int piso, int local);
 
 /* Agrega un nuevo Negocio al centro comercial */
 void agregarNegocio(local_t *** centroComercial, int fil, int col);
