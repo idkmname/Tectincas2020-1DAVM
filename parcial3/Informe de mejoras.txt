@@ -1,0 +1,24 @@
+Cambios generales en el programa:
+-Se agrego la funcion mostrarInformacion, la cual imprime la informacion de un local.
+ Esta funcion se agrego para evitar la repeticion de esta funcionalidad en distintas
+ funciones
+-Se agrego la funcion imprimirTodo, la cual muestra en pantalla todos los registros
+ actuales independientemente de si este ocupados o no.
+
+-Se agregaron multiples comprobaciones para que el usuario no rompa el programa 
+ a la hora de recibir numeros y caracteres.
+
+-Se agregaron limpiezas de buffer en cada recepcion de informacion, en pos de evitar
+ el ingreso de basura indeseada asi como de ciclos infinitos debido a una mala lectura
+ de los datos.
+
+Cambios en funciones antiguas:
+-definir tamanio: Ahora inicializa los datos necesarios, que han sido
+ agregados en la estructura [local_t]
+
+-agregar negocio: Ahora pide al usuario los nuevos datos integrados
+a la estructura [local_t]
+
+-modificar locales: Con la adicion de nuevos datos a tener en cuenta, se agrego
+un menu para esta funcionalidad asi como la capacidad de cambiar todos los datos
+independientes de la posicion del local
