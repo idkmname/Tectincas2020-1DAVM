@@ -1,23 +1,33 @@
 #include "FuncionesCC.h"
 
 void definirTamanio(local_t *** centroComercial, int fil, int col){
-	int i, j, ids = 1;
 	local_t **temp;
-	
-	temp = (local_t**) malloc( sizeof(local_t*) * (fil + 1) );
-	for ( i = 0; i <= fil; i++){
-		temp[i] = (local_t *) malloc( sizeof(local_t) * (col + 1) );
-	}
-	for ( i = 0; i <= fil; i++){
-		for ( j = 0; j <= col; j++){
-			temp[i][j].idLocal = ids++;
-			temp[i][j].pisoLocal = 0;
-			temp[i][j].numLocalxPiso = j;
-			temp[i][j].disp = vacio;
-			temp[i][j].costoLocal = 700;
+	try{
+		if ((temp = (local_t**) malloc( sizeof(local_t*) * (fil + 1) )) != NULL ){
+			int i, j, ids = 1;
+			for ( i = 0; i <= fil; i++){
+				if((temp[i] = (local_t *) malloc( sizeof(local_t) * (col + 1) )) == NULL ){
+					throw(4);
+				}
+			}
+			for ( i = 0; i <= fil; i++){
+				for ( j = 0; j <= col; j++){
+					temp[i][j].idLocal = ids++;
+					temp[i][j].pisoLocal = 0;
+					temp[i][j].numLocalxPiso = j;
+					temp[i][j].disp = vacio;
+					temp[i][j].costoLocal = VALORBASE;
+				}
+			}
+			*centroComercial = temp;
+		}
+		else{
+			throw(4);
 		}
 	}
-	*centroComercial = temp;
+	catch(...){
+		printf("No se pudo reservar suficiente memoria para crear el centro comercial");
+	}
 }
 
 void mostrarInformacion(local_t *** centroComercial, int piso, int local){
@@ -29,6 +39,7 @@ void mostrarInformacion(local_t *** centroComercial, int piso, int local){
 	printf("[Tipo: %s]",temp[piso][local].tipoLocal);
 	printf("[Capacidad en bodega: %d]",temp[piso][local].espacioBodega);
 	printf("[Empleados: %d]", temp[piso][local].empleados);
+	printf("[costo alquiler: %d]", temp[piso][local].costoLocal);
 	if (temp[piso][local].disp){
 		printf("[disponibilidad = Ocupado]\n");
 	}
@@ -43,7 +54,6 @@ void agregarNegocio(local_t *** centroComercial, int fil, int col){
 	
 	while (flag){
 		printf("Ingrese el piso en el que desea poner el Negocio: ");
-		fflush(stdin);
 		scanf("%d", &piso);
 		printf("Ingrese el numero de local en el que desea poner el Negocio: ");
 		fflush(stdin);
@@ -67,15 +77,20 @@ void agregarNegocio(local_t *** centroComercial, int fil, int col){
 	try{
 		if (scanf("%34s", temp[piso][local].nombreLocal ) > 34){
 			throw (2);
-		} 
-		printf("Ingrese de que tipo es su Negocio\ntipo: ");
-		 
+		}  
 	}
 	catch(int fail){
-		
+		printf("se ha establecido el nombre del negocio como %s\n", temp[piso][local].nombreLocal);
 	}
+	printf("Ingrese de que tipo es su Negocio\ntipo: ");
 	fflush(stdin);
-	scanf("%29s", temp[piso][local].tipoLocal );
+	try{
+		if (scanf("%29s", temp[piso][local].tipoLocal ) > 29);
+			throw(2);
+	}
+	catch(int fail){
+		printf("se ha establecido el tipo del negocio como %s\n", temp[piso][local].tipoLocal);
+	}
 	printf("Cuantos empleados tendra su local\nempleados: ");
 	fflush(stdin);
 	scanf("%d", &temp[piso][local].empleados);
@@ -125,7 +140,7 @@ void buscarLocalNombre(local_t *** centroComercial, int fil, int col, char nombr
 
 void modificarLocal(local_t *** centroComercial,int fil,int col){
 	int i, j, opc;
-	char nombre[35], tipo[30];
+	char nombre[35];
 	local_t **temp = *centroComercial;
 	
 	printf ("\ningrese el nombre del local que desea cambiar\nnombre: ");
@@ -136,10 +151,11 @@ void modificarLocal(local_t *** centroComercial,int fil,int col){
 			if ( !(strcmp(temp[i][j].nombreLocal, nombre))){
 				mostrarInformacion(centroComercial, i, j);
 				do{
-					printf("\n1.Cambiar el nombre del local ");
-					printf("\n2.Cambiar el tipo del local");
-					printf("\n3.Cambiar la capacidad de la bodega");
-					printf("\n4.Cambiar el numero de empleados actuales");
+					printf("\n1. Cambiar el nombre del local ");
+					printf("\n2. Cambiar el tipo del local");
+					printf("\n3. Cambiar la capacidad de la bodega");
+					printf("\n4. Cambiar el numero de empleados actuales");
+					printf("\n5. Cambiar el costo de alquiler para el local");
 					printf("\n0.Volver al menu principal\n");
 					fflush(stdin);
 					scanf("%d",&opc);
@@ -164,6 +180,10 @@ void modificarLocal(local_t *** centroComercial,int fil,int col){
 						printf("\nIngrese el nuevo numero de empleados\n empleados: ");
 						fflush(stdin);
 						scanf("%d", &temp[i][j].empleados);
+					case 5:
+						printf("\ningrese El nuevo costo del local\n costo: ");
+						fflush(stdin);
+						scanf("%d", &temp[i][j].costoLocal);
 					case 0:
 						break;
 					default:
@@ -211,42 +231,67 @@ void eliminarLocal(local_t *** centroComercial,int fil,int col){
 
 void guardarInformacion(local_t *** centroComercial, int fil, int col){
 	local_t **temp = *centroComercial;
-	int i, j;
-	FILE *f = fopen( FILENAME , "w" );
-	fwrite(&fil, sizeof(int), 1, f);
-	fwrite(&col, sizeof(int), 1, f);
-	for (i = 0; i <= fil; i++){
-		for (j = 0; j <= col; j++){
-			mostrarInformacion(centroComercial, i, j);
-			fwrite(&temp[i][j], sizeof(local_t), 1, f);
+	int i, j, confirmacion, flag = 0;
+	do{
+		if (flag){
+			printf("por favor ingrese una opcion valida");
 		}
+		printf("\nesta seguro de que desea sobreescribir los datos guardados?");
+		printf("\n 1.si, 2.no\n");
+		fflush(stdin);
+		scanf("%d", &confirmacion);
+		flag = 1;
+	}while((confirmacion != 1) && (confirmacion !=2));
+	if (confirmacion == 1){
+		FILE *f = fopen( FILENAME , "w" );
+		fwrite(&fil, sizeof(int), 1, f);
+		fwrite(&col, sizeof(int), 1, f);
+		for (i = 0; i <= fil; i++){
+			for (j = 0; j <= col; j++){
+				fwrite(&temp[i][j], sizeof(local_t), 1, f);
+			}
+		}
+		fclose(f);
+		printf("los datos fueron guardados correctamente");
 	}
-	fclose(f);
-
+	else{
+		printf("los datos no han sido guardados");
+	}
 }
 
 void cargarInformacion(local_t *** centroComercial, int fil, int col){
 	local_t **temp = *centroComercial;
-	int i, ultimaFil, ultimaCol, j;
-	FILE *f = fopen( FILENAME , "r" );
-	fread(&ultimaFil, sizeof(int), 1,f);
-	fread(&ultimaCol, sizeof(int), 1,f);
-	if ( (ultimaFil > fil) || (ultimaCol > col) ){
-		printf( "El tamaño del centro comercial no coincide con el ingresado\n" );
-		printf( "anteriormente, es imposible cargar la informacion" );
+	int i, ultimaFil, ultimaCol, j, ids = 1;
+	FILE *f ;
+	if ((f = fopen( FILENAME , "r" )) != NULL){
+		fread(&ultimaFil, sizeof(int), 1,f);
+		fread(&ultimaCol, sizeof(int), 1,f);
+		if ( (ultimaFil > fil) || (ultimaCol > col) ){
+			printf( "El centro comercial no es capaz de almacenar los datos ingresados " );
+			printf( "anteriormente; es imposible cargar la informacion" );
+		}
+		else{
+			for (i = 0; i <= ultimaFil; i++){
+				for (j = 0; j <= ultimaCol; j++){
+					fread(&temp[i][j], sizeof(local_t), 1, f);
+				}
+			}
+			for (i = 0; i <= ultimaFil; i++){
+				for (j = 0; j <= ultimaCol; j++){
+					temp[i][j].idLocal = ids++;
+				}
+			}
+			printf("\nla informacion se cargo correctamente\n");
+		}
 	}
 	else{
-		for (i = 0; i <= fil; i++){
-			for (j = 0; j <= col; j++){
-				fread(&temp[i][j], sizeof(local_t), 1, f);
-			}
-		}
+		printf("no se encontro ningun archivo que pueda ser cargado");
 	}
 	fclose(f);
 	
 }
 
-void ImprimirTodo(local_t *** centroComercial, int fil, int col){
+void imprimirTodo(local_t *** centroComercial, int fil, int col){
 	local_t **temp = *centroComercial;
 	int i,j;
 	for (i = 0; i <= fil; i++){
@@ -322,44 +367,77 @@ void merge(local_t a[],int i1,int j1,int i2,int j2,int col){
 }
 
 void selection_sort(local_t ***centroComercial, int fil, int col){
+	local_t **temp = *centroComercial, auxiliar;
+	int i, j, k, l, actual, menorFil, menorCol;
+	for (i = 0; i <= fil; i++){
+		for(j = 0; j <= col; j++){
+			menorFil = i;
+			menorCol = j;
+			actual = j;
+			for (k = i; k <= fil; k++){
+				for (l = actual; l <= col; l++){
+					if (temp[k][l].idLocal < temp[menorFil][menorCol].idLocal){
+						menorFil = k;
+						menorCol = l;
+					}
+				}
+				actual = 0;
+			}
+			auxiliar = temp[i][j];
+			temp[i][j] = temp[menorFil][menorCol];
+			temp[menorFil][menorCol] = auxiliar;
+		}
+	}
 }
 
 void insertion(local_t *lista, local_t item, int size, int pos){
 	int i;
 	for (i = size; i >= pos; i--){
-		lista[i] = lista[i+1];
+		lista[i] = lista[i-1];
 	}
 	lista[pos] = item;
 }
 
-void insertionSort(local_t *** centroComercial , int col, int fil ){ 
+void insertionSort(local_t *** centroComercial , int fil, int col ){ 
 	local_t **temp = *centroComercial;
-    int i, j, size, k;
+    int i, j, size, k, flag, elementos;
 	local_t *ordenado;
 	size = 0;
-	ordenado = (local_t*) malloc(sizeof(local_t) * (col*fil));
-	
-	for (i = 0; i <= fil; i++){
-		for (j = 0; j <= col; j++){
-			if (size == 0){
-				ordenado[size] = temp[i][j];
-				size++;
-			}
-			else{
-				for (k = 0; k < size; k++){
-					if(temp[i][j].costoLocal > ordenado[k].costoLocal){
-						insertion(ordenado, temp[i][j], size, k);
+	try{
+		if ((ordenado = (local_t*) malloc(sizeof(local_t) * ((col+1)*(fil+1))))== NULL ){
+			throw(4);
+		} 
+		for (i = 0; i <= fil; i++){
+			for (j = 0; j <= col; j++){
+				if (size == 0){
+					ordenado[size] = temp[i][j];
+					size++;
+				}
+				else{
+					flag = 1;
+					for (k = 0; k < size; k++){
+						if(temp[i][j].costoLocal < ordenado[k].costoLocal){
+							insertion(ordenado, temp[i][j], size, k);
+							size++;
+							k = size;
+							flag = 0;
+						}
+					}
+					if (flag){
+						ordenado[size] = temp[i][j];
 						size++;
-						k = size;
 					}
 				}
 			}
 		}
-	}
-	size = 0 ;
-	for (i = 0; i <= fil; i++){
-		for (j = 0; j <= col; j++){
-			temp[i][j] = ordenado[size++];
+		size = 0 ;
+		for (i = 0; i <= fil; i++){
+			for (j = 0; j <= col; j++){
+				temp[i][j] = ordenado[size++];
+			}
 		}
+	}
+	catch(...){
+		printf("No hay recursos suficientes para realizar esta operacion");
 	}
 } 

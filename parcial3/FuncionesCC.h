@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-#define FILENAME "Locales2"
-#define  LIMITEMAX 60
+#define FILENAME "Locales2" //nombre del archivo en el cual se guardara y leera
+							//la informacion guardada anteriormente
+#define VALORBASE 700 //valor base a la hora de crear el centro comercial
 #include <iostream>
 
 //Local 
@@ -61,7 +62,7 @@ void guardarInformacion(local_t *** centroComercial, int fil, int col);
 void cargarInformacion(local_t *** centroComercial, int fil, int col);
 
 /*Imprime todos los elementos en la matriz independiente de su contenido*/
-void ImprimirTodo(local_t *** centroComercial, int fil, int col);
+void imprimirTodo(local_t *** centroComercial, int fil, int col);
 /*#endif  FUNCIONESCC_H_ */
 
 /*funcion estandar quicksort, para ordenar una final segun el espacio en la bodega*/
@@ -80,7 +81,7 @@ void selection_sort(local_t ***centroComercial, int fil, int col);
 void insertion(local_t *lista, local_t item, int size, int pos);
 
 /*ordena los locales en la matriz segun el costo de alquiler*/
-void insertionSort(local_t *** centroComercial , int col, int fil );
+void insertionSort(local_t *** centroComercial , int fil, int col);
 
 /*++funcion de insertion: la funcion de insertion es una funcion
 especializada para el correcto procedimiento del insertion sort,

@@ -4,37 +4,12 @@
 void menu(){
 	int fil, col, opcion, filTemp, i;
 	local_t ** centroComercial;
-	char nombre[35];
-	
-	try{ 
-		printf("Ingrese la cantidad de pisos en su centro comercial: ");
-		scanf("%d", &fil);
-	
-		if (fil > LIMITEMAX){
-			fil = LIMITEMAX;
-			throw (1);
-		}
-	}
-	catch(...){
-		printf("\nEl centro comercial no puede tener mas de %d pisos; ",LIMITEMAX);
-		printf("se ha establecido en %d pisos", LIMITEMAX );
-	}
-	
-	try{
-		printf("\nIngrese la cantidad de locales en cada piso de su centro comercial: ");
-		fflush(stdin);
-		scanf("%d", &col);
-
-		if (fil > LIMITEMAX){
-			fil = LIMITEMAX;
-			throw (1);
-		}
-	}
-	catch(...){
-		printf("\nEl centro comercial no puede tener mas de %d locales; ",LIMITEMAX);
-		printf("se ha establecido en %d locales", LIMITEMAX );
-	}
-
+	char nombre[35]; 
+	printf("Ingrese la cantidad de pisos en su centro comercial: ");
+	scanf("%d", &fil);
+	printf("\nIngrese la cantidad de locales en cada piso de su centro comercial: ");
+	fflush(stdin);
+	scanf("%d", &col);
 	fil -= 1;
 	col -= 1;
 	definirTamanio(&centroComercial, fil, col);
@@ -49,7 +24,7 @@ void menu(){
 		printf("6. Modificar informacion de los locales\n");
 		printf("7. Eliminar local comercial\n");
 		printf("8. Ordenar la matriz segun el id de los locales\n");
-		printf("9. Ordenar la matriz segun la el costo de los locales\n");
+		printf("9. Ordenar la matriz segun el costo de los locales\n");
 		printf("10. Guardar informacion actua\n");
 		printf("11. Cargar datos de la ultima sesion\n");
 		printf("12. Imprimir toda la informacion almacenada\n");
@@ -79,6 +54,7 @@ void menu(){
 					scanf("%d", &filTemp);
 					if (filTemp <= fil && filTemp > 0){
 						ordenarPiso(&centroComercial, filTemp - 1, col);
+						imprimirLocalesPiso(&centroComercial, filTemp, col, 0);
 					}
 					else{
 						printf("El centro comercial no cuenta con el piso ingresado");
@@ -90,6 +66,7 @@ void menu(){
 					scanf("%d", &filTemp);
 					if (filTemp <= fil && filTemp > 0){
 						ordenarEmpleados(&centroComercial, filTemp - 1, col);
+						imprimirLocalesPiso(&centroComercial, filTemp, col, 0);
 					}
 					else{
 						printf("El centro comercial no cuenta con el piso ingresado");
@@ -108,8 +85,12 @@ void menu(){
 					eliminarLocal(&centroComercial, fil, col);
 					break;
 				case 8:
+					selection_sort(&centroComercial, fil, col);
+					imprimirTodo(&centroComercial, fil, col);
 					break;
 				case 9:
+					insertionSort(&centroComercial, fil, col);
+					imprimirTodo(&centroComercial, fil, col);
 					break;
 				case 10:
 					guardarInformacion(&centroComercial, fil, col);
@@ -118,7 +99,12 @@ void menu(){
 					cargarInformacion(&centroComercial, fil, col);
 					break;
 				case 12:
-					ImprimirTodo(&centroComercial, fil, col);
+					imprimirTodo(&centroComercial, fil, col);
+					break;
+				case 0:
+					break;
+				default:
+					printf("por favor ingrese un numero para interactuar con el menu");
 			}		
 		}
 		else{
